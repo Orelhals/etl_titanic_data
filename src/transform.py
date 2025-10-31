@@ -1,24 +1,42 @@
-import pandas as pd 
-from extract import extract_data
+#Processo ETL:
 
-#value_count()
+def fill_missing_values(df):
+    # Calculando a mediana que vai substituir os valores nulos da coluna age.
+    #Preenchendo valores nulos
+    df['Age'] = df['Age'].fillna(df['Age'].median())
+    df['Fare'] = df['Fare'].fillna(df['Fare'].median())
+    return df
 
-df = extract_data()
-# sex_number = df["Sex"].value_counts()
-# print(sex_number)
+def drop_irrelevant_columns(df):
+    #! Método drop tira os tipos especificados
+    #removendo colunas irrelevantes
+    df = df.drop(columns=['PassengerId','Name','Ticket','Cabin'])
+    return df
 
-#fazer uma função que calcule o número de sobrevivente de cada sexo.
+def encode_sex(df):
+    #transforando masculino e feminino em binário pra ajudar numa possível análise:
+    df['Sex'] = df['Sex'].map({'male' : 1, 'female' : 0})
+    return df
 
-#* EDA = Exploratory Data Analysis (Análise Exploratória de Dados).
-print(df.info())
-print(df.describe())
+def transform_data(df):
 
-print("Missing values: ", df.isnull().sum())
-#?86 valores nulos age/ 327 nulos em cabin
+    #* EDA = Exploratory Data Analysis (Análise Exploratória de Dados).
+    print("🔹 Informações iniciais:")
+    print(df.info())
+    print(df.describe())
 
-#*Processo ETL:
+    print("\n✅ Dados transformados:")
+    df = fill_missing_values(df)
+    df = drop_irrelevant_columns(df)
+    df = encode_sex(df)
+    
+    #?Após conferirmos, vimos que os valores nulos nas idades foram substituidos pela mediana dos nao nulos
+    print("Missing values: ", df.isnull().sum())
+    print(df.head())
+    return df
 
-#! Método drop tira os tipos especificados
-df = df.drop(columns=['PassengerId','Name','Ticket','Cabin'])
-print(df.head())
-print(df.shape)
+#Serve para apenas executar se eu rodar o arquivo.
+if __name__ == "__main__":
+    from extract import extract_data
+    df = extract_data()
+    df_final = transform_data(df)

@@ -1,12 +1,10 @@
 from extract import extract_data
 # from transform import clean_data
 # from load import load_data
-from extract import extract_data
 
 def main():
     raw = extract_data()
     print("First 5 records:\n", raw.head())
-    print(raw.info())
     
     # clean = clean_data(raw)
     # load_data(clean)
