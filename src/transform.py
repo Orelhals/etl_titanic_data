@@ -1,5 +1,6 @@
+import pandas as pd
+from extract import extract_data
 #Processo ETL:
-
 def fill_missing_values(df):
     # Calculando a mediana que vai substituir os valores nulos da coluna age.
     #Preenchendo valores nulos
@@ -35,8 +36,12 @@ def transform_data(df):
     print(df.head())
     return df
 
+#Cria colunas para cada subconjuto de zona das embarque, one-hot enconding: true or false para as categorias se fizerem parte do portao de embarque correto.
+def prepare_for_ml(df):
+    df = pd.get_dummies(df , columns=['Embarked'], prefix='Embarked')
+    return df
+
 #Serve para apenas executar se eu rodar o arquivo.
 if __name__ == "__main__":
-    from extract import extract_data
     df = extract_data()
     df_final = transform_data(df)
