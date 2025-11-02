@@ -39,6 +39,13 @@ def transform_data(df):
 #Cria colunas para cada subconjuto de zona das embarque, one-hot enconding: true or false para as categorias se fizerem parte do portao de embarque correto.
 def prepare_for_ml(df):
     df = pd.get_dummies(df , columns=['Embarked'], prefix='Embarked')
+    df = pd.get_dummies(df, columns=['Pclass'], prefix='Pclass')
+    df = df.astype({'Embarked_C': int,'Embarked_Q': int, 'Embarked_S': int})
+    df = df.astype({'Pclass_1': int,'Pclass_2': int, 'Pclass_3': int})
+
+    #! TODO: aplicar log transform e scaling em 'Fare' e 'fare_per_person'
+    #! quando iniciar fase de modelagem preditiva
+
     return df
 
 #Serve para apenas executar se eu rodar o arquivo.

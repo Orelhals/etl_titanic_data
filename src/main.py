@@ -1,5 +1,6 @@
 from extract import extract_data
 from transform import transform_data, prepare_for_ml
+from load import load_to_csv
 # from transform import clean_data
 # from load import load_data
 
@@ -14,6 +15,8 @@ def main():
 
     df_ml = prepare_for_ml(clean)
     print(df_ml.head())
+
+    load_to_csv(df_ml)
     
     # clean = clean_data(raw)
     # load_data(clean)
